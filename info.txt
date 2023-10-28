@@ -1,0 +1,10 @@
+5 functions
+1.Check if a database exists
+2.Retrieve data from the database
+3.Add new data to the database
+4.Update database with new data
+5.Remove data from the database
+
+dependencies
+1. inquirer
+2. uuid
