@@ -1,19 +1,30 @@
 import fs from 'fs';
 
-function queryDB(){
+export default function queryDB(externalFunction){
     try{
         let info = [];
         if(fs.existsSync("db.json")){
         
             fs.readFile("db.json", function(err, data){
+                info = JSON.parse(data.toString());
+                console.log(info);
+
                 if(err){
                     console.log(err);
+                    return;
                 }
-                info = JSON.parse(data.toString())
-                console.log(info);
+
+                if(externalFunction && !err){
+                    externalFunction(info);
+                    return;
+                }
+
             })
         }else {
-            console.log("No Data Available")
+            if(externalFunction){
+                externalFunction(info);
+                return;
+            } 
         }
     }catch(error){
         console.log("Error in reading file", error)
