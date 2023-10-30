@@ -2,6 +2,7 @@ import inquirer from 'inquirer';
 import fs from 'fs';
 import { v4 as uuidv4 } from 'uuid';
 import queryDB from './queryDB.js';
+import { type } from 'os';
 
 export async function addData(info){
     try{
@@ -20,7 +21,20 @@ export async function addData(info){
             {
                 type: "number",
                 name: "number",
-                message: "What is your favorite number?"
+                message:"What is your favorite number?",
+                validate: (input, x) => {
+                    console.log("input",input);
+                    console.log("x:", x);
+
+                    const done = new Promise();
+                    setTimeout(() => {
+                        if(typeof input !== "number"){
+                            done("please put a number");
+                            return
+                            }
+                        done(null, true);
+                    },100)
+                }
             },
             {
                 type: "list",
@@ -55,19 +69,20 @@ export async function addData(info){
             info.push(data);
             console.log("Your answers", data)
 
-        })
-
-        if(fs.existsSync("db.json")){
-            createDetails(info);
-        }else{
-            fs.appendFile("db.json", [], (err) => {
-                if(err){
-                    console.log("Can't write to file", err)
-                    return
-                }
+            if(fs.existsSync("db.json")){
                 createDetails(info);
-            })
-        }
+            }else{
+                fs.appendFile("db.json", "[]", (err) => {
+                    if(err){
+                        console.log("Can't write to file", err)
+                        return
+                    }
+                    createDetails(info);
+                })
+            }
+        })
+ 
+       
 
     }catch(error){
         console.log("Couldn't add data!", error)
