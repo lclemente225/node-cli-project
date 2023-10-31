@@ -7,48 +7,20 @@ import { type } from 'os';
 export async function addData(info){
     try{
         
-        const answers = await inquirer.prompt([
+        const answer = await inquirer.prompt([
             {
-                type: "input",
-                name: "name",
-                message: "What is your name?"
+                type: 'input',
+                name: 'name',
+                message: "What's your name?"
             },
             {
-                type: "input",
-                name: "ice cream",
-                message: "What is your favorite Ice Cream?"
-            },
-            {
-                type: "number",
-                name: "number",
-                message:"What is your favorite number?",
-                validate: (input, x) => {
-                    console.log("input",input);
-                    console.log("x:", x);
-
-                    const done = new Promise();
-                    setTimeout(() => {
-                        if(typeof input !== "number"){
-                            done("please put a number");
-                            return
-                            }
-                        done(null, true);
-                    },100)
-                }
+                type: 'number',
+                name: "phone",
+                message: "What's your phone number?"
             },
             {
                 type: "list",
-                name: "Favorite Primary Color",
-                message: "Favorite Primary color?",
-                choices: [
-                    "red",
-                    "blue",
-                    "green"
-                ]
-            },
-            {
-                type: "list",
-                name: "age",
+                name: "Age",
                 message: "Are you an adult?",
                 choices: [
                     {name: "Y", value: "Adult"},
@@ -57,14 +29,11 @@ export async function addData(info){
             }
         ])
         .then((answers) => {
-
             const data = {
                 id: uuidv4(),
                 name: answers.name,
-                favorite_iceCream: answers["ice cream"],
-                number: answers.number,
-                primary_color: answers["Favorite Primary Color"],
-                age: answers.age
+                phone_number: answers.phone,
+                age: answers.Age
             }
             info.push(data);
             console.log("Your answers", data)
